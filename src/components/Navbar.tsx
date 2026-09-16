@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { motion, useScroll, AnimatePresence } from 'framer-motion';
-import { Moon, Sun, Menu, X, ArrowUpRight } from 'lucide-react';
+import { Moon, Sun, Menu, X, Plus } from 'lucide-react';
 
 interface NavbarProps {
   darkMode: boolean;
   setDarkMode: (val: boolean) => void;
+  onOpenCreate: () => void;
 }
 
-export const Navbar: React.FC<NavbarProps> = ({ darkMode, setDarkMode }) => {
+export const Navbar: React.FC<NavbarProps> = ({ darkMode, setDarkMode, onOpenCreate }) => {
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const { scrollYProgress } = useScroll();
@@ -21,13 +22,12 @@ export const Navbar: React.FC<NavbarProps> = ({ darkMode, setDarkMode }) => {
   }, []);
 
   const navLinks = [
-    { name: "Philosophy", href: "#philosophy" },
-    { name: "Progression", href: "#progression" },
-    { name: "The Cycle", href: "#cycle" },
-    { name: "Pillars", href: "#pillars" },
-    { name: "Economy", href: "#economy" },
+    { name: "Discover", href: "#discover" },
+    { name: "Questions", href: "#questions" },
+    { name: "Experiments", href: "#experiments" },
+    { name: "Mechanism", href: "#mechanism" },
     { name: "Gallery", href: "#gallery" },
-    { name: "Success", href: "#success" },
+    { name: "Philosophy", href: "#philosophy" },
   ];
 
   return (
@@ -46,7 +46,7 @@ export const Navbar: React.FC<NavbarProps> = ({ darkMode, setDarkMode }) => {
 
       <div className="max-w-7xl mx-auto px-8 lg:px-16 flex items-center justify-between">
         
-        {/* LOGO ONLY - Direct floating transparent PNG without any background box */}
+        {/* LOGO ONLY - Direct floating transparent PNG */}
         <a href="#" className="flex items-center group relative">
           <img 
             src="/assets/logo-transparent.png" 
@@ -56,7 +56,7 @@ export const Navbar: React.FC<NavbarProps> = ({ darkMode, setDarkMode }) => {
         </a>
 
         {/* Desktop Navigation Links */}
-        <nav className="hidden lg:flex items-center gap-9">
+        <nav className="hidden lg:flex items-center gap-8">
           {navLinks.map((link) => (
             <a
               key={link.name}
@@ -73,8 +73,8 @@ export const Navbar: React.FC<NavbarProps> = ({ darkMode, setDarkMode }) => {
           ))}
         </nav>
 
-        {/* Actions & Theme Switcher */}
-        <div className="flex items-center gap-5">
+        {/* Actions, Theme Switcher & + CREATE CTA */}
+        <div className="flex items-center gap-4">
           <button
             onClick={() => setDarkMode(!darkMode)}
             className={`p-2.5 rounded-full transition-all duration-300 border ${
@@ -88,15 +88,15 @@ export const Navbar: React.FC<NavbarProps> = ({ darkMode, setDarkMode }) => {
             {darkMode ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
           </button>
 
-          <a
-            href="#start-small"
-            className="hidden sm:inline-flex items-center gap-2 text-[11px] font-bold uppercase tracking-[0.2em] px-6 py-3 rounded-full bg-gold-gradient text-obsidian-950 hover:brightness-110 shadow-lg shadow-gold-500/15 transition-all duration-300 transform hover:-translate-y-0.5"
+          <button
+            onClick={onOpenCreate}
+            className="inline-flex items-center gap-2 text-[11px] font-bold uppercase tracking-[0.2em] px-6 py-3 rounded-full bg-gold-gradient text-obsidian-950 hover:brightness-110 shadow-lg shadow-gold-500/20 transition-all duration-300 transform hover:-translate-y-0.5"
           >
-            <span>Begin</span>
-            <ArrowUpRight className="w-3.5 h-3.5" />
-          </a>
+            <Plus className="w-4 h-4" />
+            <span>Create</span>
+          </button>
 
-          {/* Mobile Toggle */}
+          {/* Mobile Menu Toggle */}
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             className={`lg:hidden p-2 rounded-lg transition-colors ${
@@ -120,7 +120,7 @@ export const Navbar: React.FC<NavbarProps> = ({ darkMode, setDarkMode }) => {
               darkMode ? 'bg-obsidian-950 border-obsidian-800 text-ivory-100' : 'bg-[#FAF8F5] border-[#E5DFD3] text-[#1C1C24]'
             }`}
           >
-            <div className="px-8 py-6 flex flex-col gap-5">
+            <div className="px-8 py-6 flex flex-col gap-4">
               {navLinks.map((link) => (
                 <a
                   key={link.name}
@@ -131,13 +131,13 @@ export const Navbar: React.FC<NavbarProps> = ({ darkMode, setDarkMode }) => {
                   {link.name}
                 </a>
               ))}
-              <a
-                href="#start-small"
-                onClick={() => setMobileMenuOpen(false)}
-                className="mt-2 text-center text-xs font-bold uppercase tracking-[0.2em] py-3.5 rounded-full bg-gold-gradient text-obsidian-950 shadow-md"
+              <button
+                onClick={() => { setMobileMenuOpen(false); onOpenCreate(); }}
+                className="mt-2 text-center text-xs font-bold uppercase tracking-[0.2em] py-3.5 rounded-full bg-gold-gradient text-obsidian-950 shadow-md flex items-center justify-center gap-2"
               >
-                Begin Movement
-              </a>
+                <Plus className="w-4 h-4" />
+                <span>Contribute (+ Create)</span>
+              </button>
             </div>
           </motion.div>
         )}
